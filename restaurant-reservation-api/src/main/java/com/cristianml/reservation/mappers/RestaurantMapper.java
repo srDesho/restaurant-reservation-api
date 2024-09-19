@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class RestaurantMapper {
@@ -15,5 +17,12 @@ public class RestaurantMapper {
     // Method that converts an entity to dto
     public RestaurantResponseDTO toResponseDTO(Restaurant restaurant) {
         return modelMapper.map(restaurant, RestaurantResponseDTO.class);
+    }
+
+    // With a list
+    public List<RestaurantResponseDTO> toRestaurantDTOList(List<Restaurant> restaurants) {
+        return restaurants.stream()
+                .map(this::toResponseDTO)
+                .toList();
     }
 }
