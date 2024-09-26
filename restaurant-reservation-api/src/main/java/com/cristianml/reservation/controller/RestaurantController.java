@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/restaurant")
+@RequestMapping("/restaurants")
 public class RestaurantController {
 
     // Dependency injection for the service layer
@@ -31,13 +31,13 @@ public class RestaurantController {
     /**
      * Get a paginated list of restaurants filtered by district name.
      * @param pageable Contains pagination details such as page number and size.
-     * @param name The name of the district to filter restaurants.
+     * @param districtName The name of the district to filter restaurants.
      * @return ResponseEntity with a paginated list of RestaurantResponseDTO filtered by district.
      */
     @GetMapping("/page/district")
     public ResponseEntity<Page<RestaurantResponseDTO>> findByDistrict(@PageableDefault(size = 5) Pageable pageable,
-                                                                      @RequestParam String name) {
-        Page<RestaurantResponseDTO> restaurants = this.restaurantService.getAllRestaurantByDistrictName(name, pageable);
+                                                                      @RequestParam String districtName) {
+        Page<RestaurantResponseDTO> restaurants = this.restaurantService.getAllRestaurantByDistrictName(districtName, pageable);
         return ResponseEntity.ok(restaurants); // Return HTTP 200 with filtered paginated results.
     }
 
