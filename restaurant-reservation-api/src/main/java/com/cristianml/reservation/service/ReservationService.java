@@ -29,6 +29,7 @@ public class ReservationService {
     private final ReservationMapper reservationMapper;
 
     // Creates a new reservation for a client and saves it in the database.
+    @Transactional
     public ReservationResponseDTO createReservation(ReservationRequestDTO reservationRequestDTO) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
