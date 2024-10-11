@@ -26,5 +26,10 @@ public class ReservationController {
         return new ResponseEntity<>(reservationResponseDTO, HttpStatus.CREATED);
     }
 
-    
+    @GetMapping
+    public ResponseEntity<?> getAllReservationsByClient() {
+        List<ReservationResponseDTO> reservations = this.reservationService.getReservationsByClientId();
+        return ResponseEntity.ok(reservations);
+    }
+
 }
