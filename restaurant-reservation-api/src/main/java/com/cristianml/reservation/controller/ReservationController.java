@@ -32,4 +32,9 @@ public class ReservationController {
         return ResponseEntity.ok(reservations);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getReservation(@PathVariable("id") Long id) {
+        ReservationResponseDTO reservation = this.reservationService.getReservationById(id);
+        return ResponseEntity.ok(reservation);
+    }
 }
