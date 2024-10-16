@@ -14,7 +14,7 @@ import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 
 
-//http://localhost:8080/api/v1/swagger-ui/index.html
+// http://localhost:8080/api/v1/swagger-ui/index.html
 @Configuration
 public class OpenAPIConfig {
 
