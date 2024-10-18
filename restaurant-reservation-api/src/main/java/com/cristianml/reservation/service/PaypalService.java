@@ -76,5 +76,49 @@ public class PaypalService {
                 .getAccessToken();
     }
 
-    
+    /**
+     * Creates a PayPal order for a reservation.
+     * Sends the total amount, return URL, and cancel URL to PayPal for checkout setup.
+     */
+    public OrderResponse createOrder(Long reservationId, String returnUrl, String cancelUrl) {
+        Reservation reservation = reservationRepository
+                .findById(reservationId)
+                .orElseThrow(ResourceNotFoundException::new);
+
+        OrderRequest orderRequest = new OrderRequest();
+        orderRequest.setIntent("CAPTURE");
+
+        // Set the amount details for the order
+        Amount amount = new Amount();
+        amount.setCurrencyCode("USD");
+        amount.setValue(reservation.getTotalAmount().toString());
+
+        // Add purchase details, including the reservation reference
+        PurchaseUnit purchaseUnit = new PurchaseUnit();
+        purchaseUnit.setReferenceId(reservation.getId().toString());
+        purchaseUnit.setAmount(amount);
+
+        orderRequest.setPurchaseUnits(Collections.singletonList(purchaseUnit));
+
+        // Configure application context for the order (e.g., branding, redirect URLs)
+        ApplicationContext applicationContext = ApplicationContext
+                .builder()
+                .brandName("CmlReserve")
+                .returnURL(returnUrl)
+                .cancelURL(cancelUrl)
+                .build();
+
+        orderRequest.setApplicationContext(applicationContext);
+
+        // Send the order request to PayPal and return the response
+        return paypalClient.post()
+                .uri("/v2/checkout/orders")
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                .body(orderRequest)
+                .retrieve()
+                .toEntity(OrderResponse.class)
+                .getBody();
+    }
+
+
 }
