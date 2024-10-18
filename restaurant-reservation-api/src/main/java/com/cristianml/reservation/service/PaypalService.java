@@ -120,5 +120,17 @@ public class PaypalService {
                 .getBody();
     }
 
-
+    /**
+     * Captures payment for a PayPal order using the order ID.
+     * Marks the transaction as completed.
+     */
+    public OrderCaptureResponse captureOrder(String orderId) {
+        return paypalClient.post()
+                .uri("v2/checkout/orders/{order_id}/capture", orderId)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + getAccessToken())
+                .contentType(MediaType.APPLICATION_JSON)
+                .retrieve()
+                .toEntity(OrderCaptureResponse.class)
+                .getBody();
+    }
 }
