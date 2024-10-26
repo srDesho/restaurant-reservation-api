@@ -25,5 +25,5 @@ import java.util.List;
                     .map(this::toResponseDTO)
             .toList();
         }
-        
+
 }
